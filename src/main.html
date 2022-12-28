@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A website that lists homeworks and their due dates">
+    <meta name="theme-color" content="#000000" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Homework Tracker</title>
+</head>
+
+<body>
+    <h1>Homework Tracker</h1>
+    <form id="homework-form">
+        <label for="homework-name">Homework Name:</label><br>
+        <input type="text" id="homework-name"><br>
+        <label for="homework-due-date">Due Date:</label><br>
+        <input type="date" id="homework-due-date"><br>
+        <label for="homework-subject">Subject:</label><br>
+        <input type="text" id="homework-subject"><br>
+        <button type="submit">Add Homework</button>
+    </form>
+    <br>
+    <table id="homework-table">
+        <tr>
+            <th>Homework Name</th>
+            <th>Due Date</th>
+            <th>Subject</th>
+        </tr>
+    </table>
+    <script src="script.js"></script>
+</body>
+
+</html>

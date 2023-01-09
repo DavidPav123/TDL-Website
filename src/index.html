@@ -8,6 +8,7 @@
     <meta name="description" content="A website that lists homeworks and their due dates">
     <meta name="theme-color" content="#000000" />
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="script.js" defer></script>
     <title>Homework Tracker</title>
 </head>
 
@@ -16,21 +17,23 @@
     <form id="homework-form">
         <label for="homework-name">Homework Name:</label><br>
         <input type="text" id="homework-name"><br>
-        <label for="homework-due-date">Due Date:</label><br>
-        <input type="date" id="homework-due-date"><br>
         <label for="homework-subject">Subject:</label><br>
         <input type="text" id="homework-subject"><br>
+        <label for="homework-due-date">Due Date:</label><br>
+        <input type="date" id="homework-due-date"><br>
+        <label for="homework-due-time">Due Time:</label><br>
+        <input type="time" id="homework-due-time"><br>
         <button type="submit">Add Homework</button>
     </form>
     <br>
     <table id="homework-table">
         <tr>
             <th>Homework Name</th>
-            <th>Due Date</th>
             <th>Subject</th>
+            <th>Due Date</th>
+            <th>Due Time</th>
         </tr>
     </table>
-    <script src="script.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
 
 <head>
     <meta charset="UTF-8">
@@ -24,6 +24,7 @@
         <label for="homework-due-time">Due Time:</label><br>
         <input type="time" id="homework-due-time"><br>
         <button type="submit">Add Homework</button>
+        <button type="button" id="download-button">Download CSV</button>
     </form>
     <br>
     <table id="homework-table">

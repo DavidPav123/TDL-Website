@@ -89,3 +89,62 @@ window.addEventListener("load", function () {
     highlightRows();
     sortTable();
 });
+//Download table as CSV
+function downloadTable() {
+    var csv = "";
+    for (var i = 1; i < homeworkTable.rows.length; i++) {
+        for (var j = 0; j < homeworkTable.rows[i].cells.length; j++) {
+            csv += homeworkTable.rows[i].cells[j].innerHTML + ",";
+        }
+        csv += "";
+    }
+    var hiddenElement = document.createElement("a");
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'homework.csv';
+    hiddenElement.click();
+}
+//Add download functionality to download button
+var downloadButton = document.getElementById("download-button");
+downloadButton === null || downloadButton === void 0 ? void 0 : downloadButton.addEventListener("click", function () {
+    downloadTable();
+});
+//Drag a CSV file onto the page to import it into the table
+document.addEventListener("drop", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    var file = event.dataTransfer.files[0];
+    var reader = new FileReader();
+    reader.onload = function (event) {
+        var csv = event.target.result;
+        var rows = csv.split(",");
+        for (var i = 0; i < rows.length - 1; i += 4) {
+            var row = homeworkTable === null || homeworkTable === void 0 ? void 0 : homeworkTable.insertRow();
+            var nameCell = row.insertCell();
+            var subjectCell = row.insertCell();
+            var dueDateCell = row.insertCell();
+            var dueTimeCell = row.insertCell();
+            nameCell.innerHTML = rows[i];
+            subjectCell.innerHTML = rows[i + 1];
+            dueDateCell.innerHTML = rows[i + 2];
+            dueTimeCell.innerHTML = rows[i + 3];
+        }
+        highlightRows();
+        sortTable();
+    };
+    reader.readAsText(file);
+});
+function dropHandler(ev) {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+}
+function dragOverHandler(ev) {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+}
+//Delete row from table on double click
+homeworkTable === null || homeworkTable === void 0 ? void 0 : homeworkTable.addEventListener("dblclick", function (event) {
+    var _a;
+    var row = event.target.parentNode;
+    (_a = row.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(row);
+});

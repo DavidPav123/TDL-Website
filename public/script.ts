@@ -3,15 +3,22 @@ const homeworkTable = <HTMLTableElement>document.getElementById("homework-table"
 const downloadButton = document.getElementById("download-button");
 
 function highlightRows() {
+    let dueDate: number = 0;
     //Get current date and time in milliseconds
     const today = (new Date()).getTime();
 
     //Loop through the rows in the table and highlight them based on due date
     for (let i = 1; i < homeworkTable.rows.length; i++) {
         //Split the due time into hours and minutes
-        const dueTime = homeworkTable.rows[i].cells[3].innerHTML.split(":");
+        const dueTimeArray = homeworkTable.rows[i].cells[3].innerHTML.split(":");
+        const dueTime = (parseInt(dueTimeArray[0]) * 3600000) + (parseInt(dueTimeArray[1]) * 60000);
         //Get due date in miliseconds
-        const dueDate = (new Date(homeworkTable.rows[i].cells[2].innerHTML)).getTime() + 36000000 + (parseInt(dueTime[0]) * 3600000) + (parseInt(dueTime[1]) * 60000);
+        if (!Number.isNaN(dueTime)) {
+            dueDate = (new Date(homeworkTable.rows[i].cells[2].innerHTML)).getTime() + 36000000 + dueTime;
+        }
+        else {
+            dueDate = (new Date(homeworkTable.rows[i].cells[2].innerHTML)).getTime() + 36000000;
+        }
         //Highlight the row based on due date
         if ((dueDate - today) < 0) {
             homeworkTable.rows[i].style.backgroundColor = "red";
@@ -28,19 +35,27 @@ function sortTable() {
     let switching = true;
     let shouldSwitch: boolean = false;
     let i: number;
-    let x: string;
-    let y: string;
+    let dueDate1: number = 0;
+    let dueDate2: number = 0;
 
     while (switching) {
         switching = false;
         for (i = 1; i < (homeworkTable.rows.length - 1); i++) {
             shouldSwitch = false
-            const dueTime1 = homeworkTable.rows[i].cells[3].innerHTML.split(":");
-            const dueDate1 = (new Date(homeworkTable.rows[i].cells[2].innerHTML)).getTime() + 36000000 + (parseInt(dueTime1[0]) * 3600000) + (parseInt(dueTime1[1]) * 60000);
-            const dueTime2 = homeworkTable.rows[i + 1].cells[3].innerHTML.split(":");
-            const dueDate2 = (new Date(homeworkTable.rows[i + 1].cells[2].innerHTML)).getTime() + 36000000 + (parseInt(dueTime2[0]) * 3600000) + (parseInt(dueTime2[1]) * 60000);
-            x = homeworkTable.rows[i].cells[2].innerHTML;
-            y = homeworkTable.rows[i + 1].cells[2].innerHTML;
+            const dueTimeArray1 = homeworkTable.rows[i].cells[3].innerHTML.split(":");
+            const dueTimeArray2 = homeworkTable.rows[i + 1].cells[3].innerHTML.split(":");
+            const dueTime1 = (parseInt(dueTimeArray1[0]) * 3600000) + (parseInt(dueTimeArray1[1]) * 60000);
+            const dueTime2 = (parseInt(dueTimeArray2[0]) * 3600000) + (parseInt(dueTimeArray2[1]) * 60000);
+            console.log(dueTime1);
+            console.log(dueTime2);
+            if (!Number.isNaN(dueTime1) && !Number.isNaN(dueTime2)) {
+                dueDate1 = (new Date(homeworkTable.rows[i].cells[2].innerHTML)).getTime() + 36000000 + dueTime1;
+                dueDate2 = (new Date(homeworkTable.rows[i + 1].cells[2].innerHTML)).getTime() + 36000000 + dueTime2;
+            }
+            else {
+                dueDate1 = (new Date(homeworkTable.rows[i].cells[2].innerHTML)).getTime() + 36000000;
+                dueDate2 = (new Date(homeworkTable.rows[i + 1].cells[2].innerHTML)).getTime() + 36000000;
+            }
             if (dueDate2 < dueDate1) {
                 shouldSwitch = true;
                 break;

@@ -1,36 +1,6 @@
 const homeworkForm = document.getElementById("homework-form");
 const homeworkTable = <HTMLTableElement>document.getElementById("homework-table");
-
-homeworkForm?.addEventListener("submit", (event) => {
-    // prevent the form from submitting
-    event.preventDefault();
-
-    // get the values of the input fields
-    const homeworkName = (<HTMLInputElement>document.getElementById("homework-name"))?.value;
-    const homeworkDueDate = (<HTMLInputElement>document.getElementById("homework-due-date"))?.value;
-    const homeworkSubject = (<HTMLInputElement>document.getElementById("homework-subject"))?.value;
-    const homeworkDueTime = (<HTMLInputElement>document.getElementById("homework-due-time"))?.value;
-
-    // create a new row in the table
-    const row = homeworkTable?.insertRow();
-
-    // insert cells in the new row
-    const nameCell = row.insertCell();
-    const subjectCell = row.insertCell();
-    const dueDateCell = row.insertCell();
-    const dueTimeCell = row.insertCell();
-
-    // set the values of the cells
-    nameCell.innerHTML = homeworkName;
-    dueDateCell.innerHTML = homeworkDueDate;
-    subjectCell.innerHTML = homeworkSubject;
-    dueTimeCell.innerHTML = homeworkDueTime;
-
-    //Highluight the rows in the table based on due date
-    highlightRows();
-    //Sort the table based on due date and time, lowest -> highest
-    sortTable();
-});
+const downloadButton = document.getElementById("download-button");
 
 function highlightRows() {
     //Get current date and time in milliseconds
@@ -83,23 +53,6 @@ function sortTable() {
     }
 }
 
-//Save table to local storage on page unload
-window.addEventListener("beforeunload", () => {
-    localStorage.setItem("homeworkTable", homeworkTable.innerHTML);
-}
-);
-
-//Load table from local storage on page load
-window.addEventListener("load", () => {
-    let listString = localStorage.getItem("homeworkTable");
-    if (listString != null) {
-        homeworkTable.innerHTML = listString;
-    }
-    highlightRows();
-    sortTable();
-}
-);
-
 //Download table as CSV
 function downloadTable() {
     let csv = "";
@@ -116,13 +69,56 @@ function downloadTable() {
     hiddenElement.click();
 }
 
-//Add download functionality to download button
-const downloadButton = document.getElementById("download-button");
+function dropHandler(ev: any) {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+}
+
+function dragOverHandler(ev: any) {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+}
+
+homeworkForm?.addEventListener("submit", (event) => {
+    // prevent the form from submitting
+    event.preventDefault();
+
+    // get the values of the input fields
+    const homeworkName = (<HTMLInputElement>document.getElementById("homework-name"))?.value;
+    const homeworkDueDate = (<HTMLInputElement>document.getElementById("homework-due-date"))?.value;
+    const homeworkSubject = (<HTMLInputElement>document.getElementById("homework-subject"))?.value;
+    const homeworkDueTime = (<HTMLInputElement>document.getElementById("homework-due-time"))?.value;
+
+    // create a new row in the table
+    const row = homeworkTable?.insertRow();
+
+    // insert cells in the new row
+    const nameCell = row.insertCell();
+    const subjectCell = row.insertCell();
+    const dueDateCell = row.insertCell();
+    const dueTimeCell = row.insertCell();
+
+    // set the values of the cells
+    nameCell.innerHTML = homeworkName;
+    dueDateCell.innerHTML = homeworkDueDate;
+    subjectCell.innerHTML = homeworkSubject;
+    dueTimeCell.innerHTML = homeworkDueTime;
+
+    //Highluight the rows in the table based on due date
+    highlightRows();
+    //Sort the table based on due date and time, lowest -> highest
+    sortTable();
+});
 
 downloadButton?.addEventListener("click", () => {
     downloadTable();
 });
 
+//Delete row from table on double click
+homeworkTable?.addEventListener("dblclick", (event: any) => {
+    const row = event.target.parentNode;
+    row.parentNode?.removeChild(row);
+});
 
 //Drag a CSV file onto the page to import it into the table
 document.addEventListener("drop", (event: any) => {
@@ -150,18 +146,17 @@ document.addEventListener("drop", (event: any) => {
     reader.readAsText(file);
 });
 
-function dropHandler(ev: any) {
-    // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
-}
+//Save table to local storage on page unload
+window.addEventListener("beforeunload", () => {
+    localStorage.setItem("homeworkTable", homeworkTable.innerHTML);
+});
 
-function dragOverHandler(ev: any) {
-    // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
-}
-
-//Delete row from table on double click
-homeworkTable?.addEventListener("dblclick", (event: any) => {
-    const row = event.target.parentNode;
-    row.parentNode?.removeChild(row);
+//Load table from local storage on page load
+window.addEventListener("load", () => {
+    let listString = localStorage.getItem("homeworkTable");
+    if (listString != null) {
+        homeworkTable.innerHTML = listString;
+    }
+    highlightRows();
+    sortTable();
 });

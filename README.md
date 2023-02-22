@@ -1,5 +1,5 @@
 # TDL-Website
 
-A To-Do list website styled to my prefernece.
+A To-Do list website styled to my preference.
 
 https://deadline-list.web.app/
